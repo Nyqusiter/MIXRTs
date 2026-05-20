@@ -34,6 +34,7 @@ def get_common_args():
     parser.add_argument('--mix_q_tree_depth', type=int, default=0, help='mix_q_tree_depth')
     parser.add_argument('--rnn_tree_dim', type=int, default=32, help='rnn_hidden_dim')
     parser.add_argument('--qmix_tree_dim', type=int, default=16, help='qmix_hidden_dim')
+    parser.add_argument('--batch_size', type=int, default=32, help='batch size for training')
     args = parser.parse_args()
     return args
 
@@ -88,7 +89,9 @@ def get_mixer_args(args):
     args.train_steps = 1
 
     # experience replay
-    args.batch_size = 32
+    # Use user-provided batch_size if given, otherwise default to 32
+    if not hasattr(args, 'batch_size') or args.batch_size is None:
+        args.batch_size = 32
     args.buffer_size = int(5e3)
 
     # how often to save the model
@@ -189,4 +192,3 @@ def get_g2anet_args(args):
     args.attention_dim = 32
     args.hard = True
     return args
-
