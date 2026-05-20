@@ -1,5 +1,6 @@
 import numpy as np
 import os
+from datetime import datetime
 from common.rollout import RolloutWorker, CommRolloutWorker
 from agent.agent import Agents, CommAgents
 from common.replay_buffer import ReplayBuffer
@@ -24,9 +25,12 @@ class Runner:
         self.episode_rewards = []
 
         # Used to save PLT and pkl
-        self.save_path = self.args.result_dir + '/' + args.alg + '/' + args.map
+        # Create directory structure: result_dir/timestamp__alg__map
+        timestamp = datetime.now().strftime('%Y_%m-%d_%H-%M-%S')
+        self.save_path = f"{self.args.result_dir}/{args.map}__{timestamp}__{args.alg}"
         if not os.path.exists(self.save_path):
             os.makedirs(self.save_path)
+        print(f'Results will be saved to: {self.save_path}')
 
         if self.args.evaluate and self.args.load_model and self.args.is_tree:
             draw_tree(self.agents.policy.eval_rnn, self.args)
@@ -112,12 +116,3 @@ class Runner:
             np.save(self.save_path + '/episode_rewards_'+str(self.args.q_tree_depth)+'_'+str(self.args.mix_q_tree_depth)\
                         +'_b'+str(self.args.beta)+'_{}_{}_{}'.format(self.args.rnn_hidden_dim, self.args.qmix_hidden_dim, num), self.episode_rewards)
         plt.close()
-
-
-
-
-
-
-
-
-
