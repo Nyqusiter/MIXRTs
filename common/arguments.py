@@ -35,6 +35,7 @@ def get_common_args():
     parser.add_argument('--rnn_tree_dim', type=int, default=32, help='rnn_hidden_dim')
     parser.add_argument('--qmix_tree_dim', type=int, default=16, help='qmix_hidden_dim')
     parser.add_argument('--batch_size', type=int, default=32, help='batch size for training')
+    parser.add_argument('--anneal_steps', type=int, default=50000, help='anneal steps')
     args = parser.parse_args()
     return args
 
